@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>자주 묻는 질문 - 산약초이야기건강촌</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont,
+          sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f9fafb;
+      }
+
+      /* Header */
+      header {
+        background: linear-gradient(135deg, #166534 0%, #16a34a 100%);
+        color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      nav {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      .nav-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 0;
+      }
+
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+        backdrop-filter: blur(10px);
+      }
+
+      .logo-icon {
+        width: 1.75rem;
+        height: 1.75rem;
+      }
+
+      .logo-text {
+        font-weight: bold;
+        font-size: 1.25rem;
+      }
+
+      .menu {
+        display: flex;
+        list-style: none;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .menu a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: opacity 0.3s;
+        white-space: nowrap;
+      }
+
+      .menu a:hover {
+        opacity: 0.8;
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+      }
+
+      .mobile-menu {
+        display: none;
+        padding-bottom: 1rem;
+      }
+
+      .mobile-menu.active {
+        display: block;
+      }
+
+      .mobile-menu-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .mobile-menu-items a {
+        font-size: 0.875rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.375rem;
+        backdrop-filter: blur(10px);
+      }
+
+      /* Main Content */
+      .container {
+        max-width: 1024px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      .title-section {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #166534;
+        margin-bottom: 0.75rem;
+      }
+
+      .subtitle {
+        color: #6b7280;
+        font-size: 1.125rem;
+      }
+
+      /* Search Box */
+      .search-container {
+        max-width: 600px;
+        margin: 0 auto 3rem;
+      }
+
+      .search-box {
+        position: relative;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 1rem 3rem 1rem 1.25rem;
+        font-size: 1rem;
+        border: 2px solid #d1d5db;
+        border-radius: 0.5rem;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: #16a34a;
+        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+      }
+
+      .search-icon {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6b7280;
+        pointer-events: none;
+      }
+
+      .search-result-info {
+        margin-top: 0.75rem;
+        padding: 0.75rem 1rem;
+        background-color: #f0fdf4;
+        border-left: 4px solid #16a34a;
+        border-radius: 0.25rem;
+        color: #166534;
+        font-weight: 500;
+        display: none;
+      }
+
+      .search-result-info.active {
+        display: block;
+      }
+
+      .no-results {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #6b7280;
+        display: none;
+      }
+
+      .no-results.active {
+        display: block;
+      }
+
+      .no-results-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      /* FAQ Sections */
+      .faq-section {
+        margin-bottom: 3rem;
+      }
+
+      .category-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1rem;
+      }
+
+      .faq-items {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .faq-item {
+        background: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: box-shadow 0.2s, transform 0.2s;
+      }
+
+      .faq-item:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+      }
+
+      .faq-item.highlight {
+        animation: highlight 1s ease-in-out;
+      }
+
+      @keyframes highlight {
+        0%,
+        100% {
+          background-color: white;
+        }
+        50% {
+          background-color: #f0fdf4;
+        }
+      }
+
+      .faq-question {
+        padding: 1.25rem 1.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 1rem;
+        transition: background-color 0.2s;
+        user-select: none;
+      }
+
+      .faq-question:hover {
+        background-color: #f9fafb;
+      }
+
+      .question-content {
+        display: flex;
+        align-items: start;
+        gap: 0.5rem;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .question-label {
+        color: #15803d;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .question-text {
+        font-weight: 600;
+        color: #166534;
+        line-height: 1.6;
+      }
+
+      .highlight-text {
+        background-color: #fef08a;
+        padding: 0 0.25rem;
+        border-radius: 0.125rem;
+      }
+
+      .chevron {
+        color: #15803d;
+        transition: transform 0.3s;
+        flex-shrink: 0;
+        margin-top: 0.125rem;
+      }
+
+      .faq-item.active .chevron {
+        transform: rotate(180deg);
+      }
+
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .faq-answer-content {
+        padding: 1.25rem 1.5rem;
+        background-color: #f9fafb;
+        border-top: 1px solid #e5e7eb;
+      }
+
+      .answer-content {
+        display: flex;
+        align-items: start;
+        gap: 0.5rem;
+      }
+
+      .answer-label {
+        color: #15803d;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .answer-text {
+        color: #4b5563;
+        line-height: 1.8;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 1.875rem;
+        }
+
+        .subtitle {
+          font-size: 1rem;
+        }
+
+        .logo-text {
+          display: none;
+        }
+
+        .menu {
+          display: none;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .category-title {
+          font-size: 1.25rem;
+          padding: 0.75rem 1rem;
+        }
+
+        .faq-question {
+          padding: 1rem;
+        }
+
+        .faq-answer-content {
+          padding: 1rem;
+        }
+
+        .question-text,
+        .answer-text {
+          font-size: 0.875rem;
+        }
+
+        .search-input {
+          padding: 0.875rem 2.5rem 0.875rem 1rem;
+          font-size: 0.875rem;
+        }
+      }
+
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .nav-left {
+          gap: 1.5rem;
+        }
+
+        .menu {
+          gap: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <nav>
+        <div class="nav-container">
+          <div class="nav-left">
+            <div class="logo">
+              <svg
+                class="logo-icon"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                />
+              </svg>
+              <span class="logo-text">산약초이야기건강촌</span>
+            </div>
+
+            <ul class="menu">
+              <li>
+                <a href="#" onclick="filterByCategory('all'); return false;"
+                  >전체보기</a
+                >
+              </li>
+              <li>
+                <a href="#" onclick="filterByCategory('건강즙'); return false;"
+                  >건강즙</a
+                >
+              </li>
+              <li>
+                <a href="#" onclick="filterByCategory('건강환'); return false;"
+                  >건강환</a
+                >
+              </li>
+              <li>
+                <a href="#" onclick="filterByCategory('건약재'); return false;"
+                  >건약재</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  onclick="filterByCategory('건강분말'); return false;"
+                  >건강분말</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  onclick="filterByCategory('추석선물'); return false;"
+                  >추석선물</a
+                >
+              </li>
+              <li>
+                <a href="#" onclick="filterByCategory('수산물'); return false;"
+                  >수산물</a
+                >
+              </li>
+              <li>
+                <a href="#" onclick="filterByCategory('축산물'); return false;"
+                  >축산물</a
+                >
+              </li>
+              <li>
+                <a href="#" onclick="filterByCategory('꿀'); return false;"
+                  >꿀</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <svg
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="mobile-menu" id="mobileMenu">
+          <div class="mobile-menu-items">
+            <a href="#" onclick="filterByCategory('all'); return false;"
+              >전체보기</a
+            >
+            <a href="#" onclick="filterByCategory('건강즙'); return false;"
+              >건강즙</a
+            >
+            <a href="#" onclick="filterByCategory('건강환'); return false;"
+              >건강환</a
+            >
+            <a href="#" onclick="filterByCategory('건약재'); return false;"
+              >건약재</a
+            >
+            <a href="#" onclick="filterByCategory('건강분말'); return false;"
+              >건강분말</a
+            >
+            <a href="#" onclick="filterByCategory('추석선물'); return false;"
+              >추석선물</a
+            >
+            <a href="#" onclick="filterByCategory('수산물'); return false;"
+              >수산물</a
+            >
+            <a href="#" onclick="filterByCategory('축산물'); return false;"
+              >축산물</a
+            >
+            <a href="#" onclick="filterByCategory('꿀'); return false;">꿀</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+      <div class="title-section">
+        <h1>자주 묻는 질문</h1>
+        <p class="subtitle">고객님들께서 자주 문의하시는 내용을 정리했습니다</p>
+      </div>
+
+      <!-- Search Box -->
+      <div class="search-container">
+        <div class="search-box">
+          <input
+            type="text"
+            class="search-input"
+            id="searchInput"
+            placeholder="질문 내용을 검색해보세요..."
+            onkeyup="searchFAQ()"
+          />
+          <svg
+            class="search-icon"
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
+        <div class="search-result-info" id="searchResultInfo"></div>
+      </div>
+
+      <div class="no-results" id="noResults">
+        <div class="no-results-icon">🔍</div>
+        <h3>검색 결과가 없습니다</h3>
+        <p>다른 키워드로 검색해보세요</p>
+      </div>
+
+      <!-- FAQ Content -->
+      <div id="faqContainer"></div>
+    </div>
+
+    <script src="faq-data.js"></script>
+    <script>
+      // 모바일 메뉴 토글
+      function toggleMobileMenu() {
+        const menu = document.getElementById("mobileMenu");
+        menu.classList.toggle("active");
+      }
+
+      // FAQ 토글
+      function toggleFAQ(element) {
+        const faqItem = element.closest(".faq-item");
+        const answer = faqItem.querySelector(".faq-answer");
+        const answerContent = faqItem.querySelector(".faq-answer-content");
+        const isActive = faqItem.classList.contains("active");
+
+        // 모든 FAQ 닫기
+        document.querySelectorAll(".faq-item").forEach((item) => {
+          item.classList.remove("active");
+          item.querySelector(".faq-answer").style.maxHeight = null;
+        });
+
+        // 클릭한 FAQ 열기/닫기
+        if (!isActive) {
+          faqItem.classList.add("active");
+          answer.style.maxHeight = answerContent.scrollHeight + "px";
+        }
+      }
+
+      // FAQ 렌더링
+      function renderFAQ(data = faqData) {
+        const container = document.getElementById("faqContainer");
+        container.innerHTML = "";
+
+        data.forEach((section, sectionIdx) => {
+          const sectionDiv = document.createElement("div");
+          sectionDiv.className = "faq-section";
+          sectionDiv.innerHTML = `
+                    <h2 class="category-title">${section.category}</h2>
+                    <div class="faq-items">
+                        ${section.items
+                          .map(
+                            (item, itemIdx) => `
+                            <div class="faq-item" data-section="${sectionIdx}" data-item="${itemIdx}">
+                                <div class="faq-question" onclick="toggleFAQ(this)">
+                                    <div class="question-content">
+                                        <span class="question-label">Q.</span>
+                                        <span class="question-text">${item.q}</span>
+                                    </div>
+                                    <svg class="chevron" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </div>
+                                <div class="faq-answer">
+                                    <div class="faq-answer-content">
+                                        <div class="answer-content">
+                                            <span class="answer-label">A.</span>
+                                            <span class="answer-text">${item.a}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                `;
+          container.appendChild(sectionDiv);
+        });
+      }
+
+      // 카테고리 필터링
+      let currentFilter = "all";
+
+      function filterByCategory(category) {
+        currentFilter = category;
+        const searchInput = document.getElementById("searchInput");
+        const resultInfo = document.getElementById("searchResultInfo");
+        const noResults = document.getElementById("noResults");
+
+        // 검색어 초기화
+        searchInput.value = "";
+        resultInfo.classList.remove("active");
+        noResults.classList.remove("active");
+
+        if (category === "all") {
+          renderFAQ();
+          return;
+        }
+
+        const filteredData = [];
+        faqData.forEach((section) => {
+          // keywords 배열로 매칭 또는 질문/답변에서 직접 검색
+          const matchesKeywords =
+            section.keywords &&
+            section.keywords.some(
+              (keyword) =>
+                keyword.includes(category) || category.includes(keyword)
+            );
+
+          if (matchesKeywords) {
+            filteredData.push(section);
+          } else {
+            // keywords가 없거나 매칭 안되면 질문/답변에서 검색
+            const filteredItems = section.items.filter((item) => {
+              return item.q.includes(category) || item.a.includes(category);
+            });
+
+            if (filteredItems.length > 0) {
+              filteredData.push({
+                category: section.category,
+                items: filteredItems,
+              });
+            }
+          }
+        });
+
+        if (filteredData.length > 0) {
+          renderFAQ(filteredData);
+          const totalCount = filteredData.reduce(
+            (sum, section) => sum + section.items.length,
+            0
+          );
+          resultInfo.textContent = `"${category}" 관련 질문 ${totalCount}개`;
+          resultInfo.classList.add("active");
+        } else {
+          document.getElementById("faqContainer").innerHTML = "";
+          noResults.classList.add("active");
+        }
+
+        // 모바일 메뉴 닫기
+        document.getElementById("mobileMenu").classList.remove("active");
+      }
+
+      // 검색 기능
+      function searchFAQ() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase()
+          .trim();
+        const resultInfo = document.getElementById("searchResultInfo");
+        const noResults = document.getElementById("noResults");
+
+        if (searchTerm === "") {
+          renderFAQ();
+          resultInfo.classList.remove("active");
+          noResults.classList.remove("active");
+          return;
+        }
+
+        const filteredData = [];
+        let totalMatches = 0;
+
+        faqData.forEach((section) => {
+          const filteredItems = section.items.filter((item) => {
+            return (
+              item.q.toLowerCase().includes(searchTerm) ||
+              item.a.toLowerCase().includes(searchTerm)
+            );
+          });
+
+          if (filteredItems.length > 0) {
+            filteredData.push({
+              category: section.category,
+              items: filteredItems.map((item) => ({
+                q: highlightText(item.q, searchTerm),
+                a: highlightText(item.a, searchTerm),
+              })),
+            });
+            totalMatches += filteredItems.length;
+          }
+        });
+
+        if (filteredData.length > 0) {
+          renderFAQ(filteredData);
+          resultInfo.textContent = `"${searchTerm}" 검색 결과: ${totalMatches}개의 질문을 찾았습니다`;
+          resultInfo.classList.add("active");
+          noResults.classList.remove("active");
+
+          // 첫 번째 결과 하이라이트
+          setTimeout(() => {
+            const firstItem = document.querySelector(".faq-item");
+            if (firstItem) {
+              firstItem.classList.add("highlight");
+              setTimeout(() => firstItem.classList.remove("highlight"), 1000);
+            }
+          }, 100);
+        } else {
+          document.getElementById("faqContainer").innerHTML = "";
+          resultInfo.classList.remove("active");
+          noResults.classList.add("active");
+        }
+      }
+
+      // 텍스트 하이라이트
+      function highlightText(text, searchTerm) {
+        if (!searchTerm) return text;
+        const regex = new RegExp(`(${searchTerm})`, "gi");
+        return text.replace(regex, '<span class="highlight-text">$1</span>');
+      }
+
+      // 초기 렌더링
+      document.addEventListener("DOMContentLoaded", () => {
+        renderFAQ();
+      });
+    </script>
+  </body>
+</html>
